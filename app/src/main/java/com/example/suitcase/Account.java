@@ -10,6 +10,10 @@ public class Account {
 	public Account() {
 	}
 
+	public Account(String name, String password) {
+		mName = name;
+		mPassword = password;
+	}
 	public void setName(String name) {
 		mName = name;
 	}
