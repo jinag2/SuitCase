@@ -9,4 +9,6 @@
     <string name="sign_up">Sign up</string>
     <string name="register">Register</string>
     <string name="cancel">Cancel</string>
+    <string name="username_is_blank">The user name is blank.</string>
+    <string name="passwords_not_match">Passwords do not match.</string>
 </resources>
