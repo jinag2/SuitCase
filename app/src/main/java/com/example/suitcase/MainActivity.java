@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
 
 	private Account mAccount;
 	private EditText mUserNameEditText;
@@ -32,10 +34,13 @@ public class MainActivity extends AppCompatActivity {
 		mLoginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Account loginAccount = new Account();
-				loginAccount.setName(String.valueOf(mUserNameEditText.getText()));
-				loginAccount.setPassword(String.valueOf(mPasswordEditText.getText()));
-			}
+				String username = String.valueOf(mUserNameEditText.getText());
+				String password = String.valueOf(mPasswordEditText.getText());
+//				if (checkAccount(username, password)) {
+					Intent intent = ItemListActivity.newIntent(MainActivity.this, username);
+					startActivity(intent);
+				}
+//			}
 		});
 
 		mSignUpButton = findViewById(R.id.sign_up_btn);
@@ -61,5 +66,16 @@ public class MainActivity extends AppCompatActivity {
 			}
 			Boolean register = RegisterActivity.wasRegister(data);
 		}
+	}
+
+
+	private boolean checkAccount(String username, String password) {
+		if (username.equals("chenon") && password.equals("1234")) {
+			return true;
+		}
+		int messageResId = R.string.account_error;
+		Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
+				.show();
+		return false;
 	}
 }

@@ -2,7 +2,6 @@ package com.example.suitcase;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -56,8 +55,8 @@ public class RegisterActivity extends AppCompatActivity {
 	}
 
 	private boolean checkUsername() {
-		String strUsername = String.valueOf(mUserNameEditText.getText());
-		if (strUsername.isBlank() == false) {
+		String username = String.valueOf(mUserNameEditText.getText());
+		if (username.isBlank() == false) {
 			return true;
 		}
 
@@ -68,9 +67,9 @@ public class RegisterActivity extends AppCompatActivity {
 	}
 
 	private boolean checkPassword() {
-		String strPassword = String.valueOf(mPasswordEditText.getText());
-		String strRePassword = String.valueOf(mRePasswordEditText.getText());
-		if (strPassword.equals(strRePassword)) {
+		String password = String.valueOf(mPasswordEditText.getText());
+		String rePassword = String.valueOf(mRePasswordEditText.getText());
+		if (password.equals(rePassword)) {
 			return true;
 		}
 		int messageResId = R.string.passwords_not_match;
