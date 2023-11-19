@@ -1,5 +1,6 @@
 package com.example.suitcase;
 
+import android.content.ContentValues;
 import android.content.Context;
 
 import java.util.ArrayList;
@@ -43,5 +44,9 @@ public class SuitCase {
 		}
 
 		return null;
+	}
+
+	public void updateItem(Item item) {
+
 	}
 }

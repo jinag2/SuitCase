@@ -20,6 +20,9 @@
     <string name="item_desc_hint">Enter a description for the item.</string>
     <string name="item_solved_text">Solved</string>
     <string name="item_share_text">Share the item</string>
-    <string name="item_report_solved">The item is solved.</string>
-    <string name="item_report_unsolved">The item is not solved.</string>
+    <string name="item_report">%1$s! The price is $%2$s, and %3$s</string>
+    <string name="item_report_solved">it is bought.</string>
+    <string name="item_report_unsolved">it is not bought yet.</string>
+    <string name="item_report_subject">Suit Case Message</string>
+    <string name="send_report">Send suit case message via</string>
 </resources>

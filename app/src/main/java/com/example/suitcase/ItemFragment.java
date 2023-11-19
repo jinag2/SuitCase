@@ -1,13 +1,10 @@
 package com.example.suitcase;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.icu.text.DecimalFormat;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,23 +12,14 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
-
 import java.util.UUID;
-
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 public class ItemFragment  extends Fragment {
 
 	private static final String ARG_ITEM_ID = "item_id";
-
 	private Item mItem;
-	private EditText mTitleEditText;
-	private EditText mPriceEditText;
-	private EditText mDescEditText;
-	private CheckBox mSolvedCheckbox;
-	private Button mShareButton;
+
 
 	public static ItemFragment newInstance(UUID itemId) {
 		Bundle args = new Bundle();
@@ -45,16 +33,18 @@ public class ItemFragment  extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		assert getArguments() != null;
 		UUID ItemId = (UUID) getArguments().getSerializable(ARG_ITEM_ID);
 		mItem = SuitCase.get(getActivity()).getItem(ItemId);
 	}
 
+	@SuppressLint("DefaultLocale")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_item, container, false);
 
-		mTitleEditText = view.findViewById(R.id.item_title);
+		EditText mTitleEditText = view.findViewById(R.id.item_title);
 		mTitleEditText.setText(mItem.getTitle());
 		mTitleEditText.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -71,7 +61,7 @@ public class ItemFragment  extends Fragment {
 			}
 		});
 
-		mPriceEditText = view.findViewById(R.id.item_price);
+		EditText mPriceEditText = view.findViewById(R.id.item_price);
 		mPriceEditText.setText(String.format("%.02f", mItem.getPrice()));
 		mPriceEditText.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -80,7 +70,7 @@ public class ItemFragment  extends Fragment {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				mItem.setPrice(Float.valueOf(s.toString()));
+				mItem.setPrice(Float.parseFloat(s.toString()));
 			}
 
 			@Override
@@ -88,7 +78,7 @@ public class ItemFragment  extends Fragment {
 			}
 		});
 
-		mDescEditText = view.findViewById(R.id.item_desc);
+		EditText mDescEditText = view.findViewById(R.id.item_desc);
 		mDescEditText.setText(mItem.getDesc());
 		mDescEditText.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -105,7 +95,7 @@ public class ItemFragment  extends Fragment {
 			}
 		});
 
-		mSolvedCheckbox = view.findViewById(R.id.item_solved);
+		CheckBox mSolvedCheckbox = view.findViewById(R.id.item_solved);
 		mSolvedCheckbox.setChecked(mItem.isSolved());
 		mSolvedCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
@@ -114,14 +104,40 @@ public class ItemFragment  extends Fragment {
 			}
 		});
 
-		mShareButton = view.findViewById(R.id.item_share);
+		Button mShareButton = view.findViewById(R.id.item_share);
 		mShareButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				Intent intent = new Intent(Intent.ACTION_SEND);
+				intent.setType("text/plain");
+				intent.putExtra(Intent.EXTRA_TEXT, getItemReport());
+				intent.putExtra(Intent.EXTRA_SUBJECT,
+						getString(R.string.item_report_subject));
+				intent = Intent.createChooser(intent, getString(R.string.send_report));
+				startActivity(intent);
 			}
 		});
 
 		return view;
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		SuitCase.get(getActivity())
+				.updateItem(mItem);
+	}
+
+	private String getItemReport() {
+		String solvedString = null;
+		if (mItem.isSolved()) {
+			solvedString = getString(R.string.item_report_solved);
+		} else {
+			solvedString = getString(R.string.item_report_unsolved);
+		}
+
+		@SuppressLint("DefaultLocale") String price = String.format("%.02f", mItem.getPrice());
+		return getString(R.string.item_report, mItem.getTitle(), price, solvedString);
 	}
 }
