@@ -12,7 +12,14 @@
     <string name="username_is_blank">The user name is blank.</string>
     <string name="passwords_not_match">Passwords do not match.</string>
     <string name="account_error">The username or the password is error.</string>
-    <string name="item_title">Item Title</string>
+    <string name="item_title">Title</string>
     <string name="item_price">Price</string>
-    <string name="item_desc">Desc.</string>
+    <string name="item_desc">Description</string>
+    <string name="item_title_hint">Enter a title for the item.</string>
+    <string name="item_price_hint">Enter a price for the item.</string>
+    <string name="item_desc_hint">Enter a description for the item.</string>
+    <string name="item_solved_text">Solved</string>
+    <string name="item_share_text">Share the item</string>
+    <string name="item_report_solved">The item is solved.</string>
+    <string name="item_report_unsolved">The item is not solved.</string>
 </resources>

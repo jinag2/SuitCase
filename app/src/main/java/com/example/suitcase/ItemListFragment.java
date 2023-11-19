@@ -24,8 +24,7 @@ public class ItemListFragment extends Fragment {
 	                         Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
-		mCrimeRecyclerView = (RecyclerView) view
-				.findViewById(R.id.item_recycler_view);
+		mCrimeRecyclerView = view.findViewById(R.id.item_recycler_view);
 		mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 		updateUI();
@@ -66,10 +65,10 @@ public class ItemListFragment extends Fragment {
 			super(inflater.inflate(R.layout.view_holder_item, parent, false));
 			itemView.setOnClickListener(this);
 
-			mTitleTextView = (TextView) itemView.findViewById(R.id.item_title);
-			mPriceTextView = (TextView) itemView.findViewById(R.id.item_price);
-			mDescTextView = (TextView) itemView.findViewById(R.id.item_desc);
-			mSolvedImageView = (ImageView) itemView.findViewById(R.id.item_solved);
+			mTitleTextView = itemView.findViewById(R.id.item_title);
+			mPriceTextView = itemView.findViewById(R.id.item_price);
+			mDescTextView = itemView.findViewById(R.id.item_desc);
+			mSolvedImageView = itemView.findViewById(R.id.item_solved);
 		}
 
 		@SuppressLint("SetTextI18n")
@@ -83,8 +82,8 @@ public class ItemListFragment extends Fragment {
 
 		@Override
 		public void onClick(View view) {
-//			Intent intent = ItemActivity.newIntent(getActivity(), mItem.getId());
-//			startActivity(intent);
+			Intent intent = ItemActivity.newIntent(getActivity(), mItem.getId());
+			startActivity(intent);
 		}
 	}
 

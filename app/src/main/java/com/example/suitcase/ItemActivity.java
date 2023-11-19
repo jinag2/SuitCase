@@ -8,16 +8,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class ItemListActivity extends AppCompatActivity {
+import java.util.UUID;
 
-	private static final String EXTRA_LOGIN_USERNAME =
-			"com.example.suitcase.login_username";
+public class ItemActivity extends AppCompatActivity {
 
-	private String mUsername;
+	private static final String EXTRA_ITEM_ID =
+			"com.example.suitcase.item_id";
 
-	public static Intent newIntent(Context packageContext, String username) {
-		Intent intent = new Intent(packageContext, ItemListActivity.class);
-		intent.putExtra(EXTRA_LOGIN_USERNAME, username);
+	public static Intent newIntent(Context packageContext, UUID itemId) {
+		Intent intent = new Intent(packageContext, ItemActivity.class);
+		intent.putExtra(EXTRA_ITEM_ID, itemId);
 		return intent;
 	}
 
@@ -26,13 +26,12 @@ public class ItemListActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fragment);
 
-		mUsername = getIntent().getStringExtra(EXTRA_LOGIN_USERNAME);
-
 		FragmentManager fm = getSupportFragmentManager();
 		Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
 		if (fragment == null) {
-			fragment = new ItemListFragment();
+			UUID itemId = (UUID) getIntent().getSerializableExtra(EXTRA_ITEM_ID);
+			fragment = ItemFragment.newInstance(itemId);
 			fm.beginTransaction()
 					.add(R.id.fragment_container, fragment)
 					.commit();
