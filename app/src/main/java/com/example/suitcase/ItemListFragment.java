@@ -16,8 +16,28 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ItemListFragment extends Fragment {
+
+	private static final String ARG_USERNAME = "username";
+	private static String mUsername;
+
 	private RecyclerView mCrimeRecyclerView;
 	private ItemAdapter mAdapter;
+
+	public static ItemListFragment newInstance(String username) {
+		Bundle args = new Bundle();
+		args.putString(ARG_USERNAME, username);
+
+		ItemListFragment fragment = new ItemListFragment();
+		fragment.setArguments(args);
+		return fragment;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		assert getArguments() != null;
+		mUsername = getArguments().getString(ARG_USERNAME);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

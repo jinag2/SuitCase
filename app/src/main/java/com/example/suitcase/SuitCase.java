@@ -1,15 +1,15 @@
 package com.example.suitcase;
 
-import android.content.ContentValues;
 import android.content.Context;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class SuitCase {
 	private static SuitCase sSuitCase;
-
+	private Context mContext;
 	private List<Item> mItems;
 
 	public static SuitCase get(Context context) {
@@ -21,8 +21,9 @@ public class SuitCase {
 	}
 
 	private SuitCase(Context context) {
+		mContext = context.getApplicationContext();
 		mItems = new ArrayList<>();
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 10; i++) {
 			Item item = new Item();
 			item.setTitle("Item #" + i);
 			item.setPrice((i*10+i)/2);
@@ -44,6 +45,11 @@ public class SuitCase {
 		}
 
 		return null;
+	}
+
+	public File getPhotoFile(Item item) {
+		File filesDir = mContext.getFilesDir();
+		return new File(filesDir, item.getPhotoFilename());
 	}
 
 	public void updateItem(Item item) {
