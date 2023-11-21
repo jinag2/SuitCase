@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,7 +22,6 @@ public class ItemListFragment extends Fragment {
 
 	private static final String ARG_USERNAME = "username";
 	private static String mUsername;
-
 	private RecyclerView mCrimeRecyclerView;
 	private ItemAdapter mAdapter;
 
@@ -35,6 +37,7 @@ public class ItemListFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		assert getArguments() != null;
 		mUsername = getArguments().getString(ARG_USERNAME);
 	}
@@ -56,6 +59,27 @@ public class ItemListFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		updateUI();
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.fragment_item_list, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem menu_item) {
+		int menuItemId = menu_item.getItemId();
+		if (menuItemId == R.id.add_item) {
+			Item item = new Item();
+			SuitCase.get(getActivity()).addItem(item);
+			Intent intent = ItemActivity.newIntent(getActivity(), item.getId());
+			startActivity(intent);
+			return true;
+		}
+		else {
+			return super.onOptionsItemSelected(menu_item);
+		}
 	}
 
 	@SuppressLint("NotifyDataSetChanged")

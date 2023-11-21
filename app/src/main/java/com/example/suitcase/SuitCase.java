@@ -10,7 +10,7 @@ import java.util.UUID;
 public class SuitCase {
 	private static SuitCase sSuitCase;
 	private Context mContext;
-	private List<Item> mItems;
+	private List<Item> mItemList;
 
 	public static SuitCase get(Context context) {
 		if (sSuitCase == null) {
@@ -22,23 +22,36 @@ public class SuitCase {
 
 	private SuitCase(Context context) {
 		mContext = context.getApplicationContext();
-		mItems = new ArrayList<>();
+		mItemList = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
 			Item item = new Item();
 			item.setTitle("Item #" + i);
 			item.setPrice((i*10+i)/2);
 			item.setDesc("This is item #" + i);
 			item.setSolved(i % 2 == 0);
-			mItems.add(item);
+			mItemList.add(item);
 		}
 	}
 
+	public void addItem(Item item) {
+		int no = mItemList.size();
+		item.setTitle("Item #" + no);
+		item.setPrice((no*10+no)/2);
+		item.setDesc("This is item #" + no);
+		item.setSolved(no % 2 == 0);
+		mItemList.add(item);
+	}
+
+	public boolean delItem(Item item) {
+		return mItemList.remove(item);
+	}
+
 	public List<Item> getItems() {
-		return mItems;
+		return mItemList;
 	}
 
 	public Item getItem(UUID id) {
-		for (Item item : mItems) {
+		for (Item item : mItemList) {
 			if (item.getId().equals(id)) {
 				return item;
 			}

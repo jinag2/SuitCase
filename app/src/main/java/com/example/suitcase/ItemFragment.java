@@ -15,6 +15,9 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -55,6 +58,7 @@ public class ItemFragment  extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		assert getArguments() != null;
 		UUID ItemId = (UUID) getArguments().getSerializable(ARG_ITEM_ID);
 		mItem = SuitCase.get(getActivity()).getItem(ItemId);
@@ -184,6 +188,24 @@ public class ItemFragment  extends Fragment {
 				.updateItem(mItem);
 	}
 
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.fragment_item, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem menu_item) {
+		int menuItemId = menu_item.getItemId();
+		if (menuItemId == R.id.del_item) {
+			SuitCase.get(getActivity()).delItem(mItem);
+			getActivity().finish();
+			return true;
+		}
+		else {
+			return super.onOptionsItemSelected(menu_item);
+		}
+	}
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode != Activity.RESULT_OK) {

@@ -25,4 +25,6 @@
     <string name="item_report_unsolved">it is not bought yet.</string>
     <string name="item_report_subject">Suit Case Message</string>
     <string name="send_report">Send suit case message via</string>
+    <string name="new_item">New Item</string>
+    <string name="del_item">Delete Item</string>
 </resources>
