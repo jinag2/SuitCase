@@ -40,7 +40,6 @@ public class SuitCase {
 
 	public boolean delItem(Item item) {
 		String uuidString = item.getId().toString();
-		ContentValues values = getContentValues(item);
 
 		mDatabase.delete(ItemTable.NAME,
 				ItemTable.Cols.UUID + " = ?",
