@@ -11,7 +11,11 @@ public class Item {
 	private boolean mSolved;
 
 	public Item() {
-		mId = UUID.randomUUID();
+		this(UUID.randomUUID());
+	}
+
+	public Item(UUID id) {
+		mId = id;
 	}
 
 	public UUID getId() {

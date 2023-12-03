@@ -85,12 +85,13 @@ public class ItemListFragment extends Fragment {
 	@SuppressLint("NotifyDataSetChanged")
 	private void updateUI() {
 		SuitCase suitCase = SuitCase.get(getActivity());
-		List<Item> crimes = suitCase.getItems();
+		List<Item> items = suitCase.getItems();
 
 		if (mAdapter == null) {
-			mAdapter = new ItemAdapter(crimes);
+			mAdapter = new ItemAdapter(items);
 			mCrimeRecyclerView.setAdapter(mAdapter);
 		} else {
+			mAdapter.setItems(items);
 			mAdapter.notifyDataSetChanged();
 		}
 	}
@@ -154,6 +155,10 @@ public class ItemListFragment extends Fragment {
 		@Override
 		public int getItemCount() {
 			return mItems.size();
+		}
+
+		public void setItems(List<Item> items) {
+			mItems = items;
 		}
 	}
 }
