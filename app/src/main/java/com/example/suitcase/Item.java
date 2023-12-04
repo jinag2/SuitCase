@@ -5,6 +5,7 @@ import java.util.UUID;
 public class Item {
 
 	private UUID mId;
+	private String mUserName;
 	private String mTitle;
 	private float mPrice;
 	private String mDesc;
@@ -20,6 +21,14 @@ public class Item {
 
 	public UUID getId() {
 		return mId;
+	}
+
+	public String getUserName() {
+		return mUserName;
+	}
+
+	public void setUserName(String name) {
+		mUserName = name;
 	}
 
 	public String getTitle() {

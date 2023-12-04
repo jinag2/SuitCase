@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ItemListFragment extends Fragment {
 
 	private static final String ARG_USERNAME = "username";
-	private static String mUsername;
+	private static String mUserName;
 	private RecyclerView mCrimeRecyclerView;
 	private ItemAdapter mAdapter;
 
@@ -39,7 +39,7 @@ public class ItemListFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		assert getArguments() != null;
-		mUsername = getArguments().getString(ARG_USERNAME);
+		mUserName = getArguments().getString(ARG_USERNAME);
 	}
 
 	@Override
@@ -72,6 +72,7 @@ public class ItemListFragment extends Fragment {
 		int menuItemId = menu_item.getItemId();
 		if (menuItemId == R.id.add_item) {
 			Item item = new Item();
+			item.setUserName(mUserName);
 			SuitCase.get(getActivity()).addItem(item);
 			Intent intent = ItemActivity.newIntent(getActivity(), item.getId());
 			startActivity(intent);
