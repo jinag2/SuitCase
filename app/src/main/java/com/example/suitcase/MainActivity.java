@@ -11,8 +11,6 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-
-	private Account mAccount;
 	private EditText mUserNameEditText;
 	private EditText mPasswordEditText;
 	private Button mLoginButton;
@@ -25,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		mAccount = new Account("chenon", "1234");
-
 		mUserNameEditText = findViewById(R.id.login_username);
 		mPasswordEditText = findViewById(R.id.login_password);
 
@@ -36,11 +32,11 @@ public class MainActivity extends AppCompatActivity {
 			public void onClick(View v) {
 				String username = String.valueOf(mUserNameEditText.getText());
 				String password = String.valueOf(mPasswordEditText.getText());
-//				if (checkAccount(username, password)) {
+				if (checkAccount(username, password)) {
 					Intent intent = ItemListActivity.newIntent(MainActivity.this, username);
 					startActivity(intent);
 				}
-//			}
+			}
 		});
 
 		mSignUpButton = findViewById(R.id.sign_up_btn);
@@ -68,11 +64,14 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
-
 	private boolean checkAccount(String username, String password) {
-		if (username.equals("chenon") && password.equals("1234")) {
-			return true;
+		Account account = SuitCase.get(this).getAccount(username);
+		if (account != null) {
+			if (account.getName().equals(username) && account.getPassword().equals(password)) {
+				return true;
+			}
 		}
+
 		int messageResId = R.string.account_error;
 		Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
 				.show();

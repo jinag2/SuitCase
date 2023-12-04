@@ -16,6 +16,13 @@ public class SuitCaseBaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		db.execSQL("create table " + SuitCaseDbSchema.AccountTable.NAME + "(" +
+				" _id integer primary key autoincrement, " +
+				SuitCaseDbSchema.AccountTable.Cols.NAME + ", " +
+				SuitCaseDbSchema.AccountTable.Cols.PASSWORD +
+				")"
+		);
+
 		db.execSQL("create table " + SuitCaseDbSchema.ItemTable.NAME + "(" +
 				" _id integer primary key autoincrement, " +
 				SuitCaseDbSchema.ItemTable.Cols.UUID + ", " +

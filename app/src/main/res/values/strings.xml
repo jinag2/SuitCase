@@ -10,6 +10,7 @@
     <string name="register">Register</string>
     <string name="cancel">Cancel</string>
     <string name="username_is_blank">The user name is blank.</string>
+    <string name="username_exist">This account exist.</string>
     <string name="passwords_not_match">Passwords do not match.</string>
     <string name="account_error">The username or the password is error.</string>
     <string name="item_title">Title</string>

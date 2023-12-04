@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.suitcase.database.AccountCursorWrapper;
 import com.example.suitcase.database.ItemCursorWrapper;
 import com.example.suitcase.database.SuitCaseBaseHelper;
+import com.example.suitcase.database.SuitCaseDbSchema.AccountTable;
 import com.example.suitcase.database.SuitCaseDbSchema.ItemTable;
 import java.io.File;
 import java.util.ArrayList;
@@ -32,8 +34,85 @@ public class SuitCase {
 		mDatabase = new SuitCaseBaseHelper(mContext).getWritableDatabase();
 	}
 
+	public void addAccount(Account account) {
+		ContentValues values = getAccountContentValues(account);
+
+		mDatabase.insert(AccountTable.NAME, null, values);
+	}
+
+	public boolean delAccount(Account account) {
+		mDatabase.delete(AccountTable.NAME,
+				AccountTable.Cols.NAME + " = ?",
+				new String[] { account.getName() });
+		return true;
+	}
+
+	public List<Account> getAccounts() {
+		List<Account> accounts = new ArrayList<>();
+		AccountCursorWrapper cursor = queryAccounts(null, null);
+
+		try {
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()) {
+				accounts.add(cursor.getAccount());
+				cursor.moveToNext();
+			}
+		} finally {
+			cursor.close();
+		}
+
+		return accounts;
+	}
+
+	public Account getAccount(String name) {
+		AccountCursorWrapper cursor = queryAccounts(
+				AccountTable.Cols.NAME + " =?",
+				new String[] { name }
+		);
+
+		try {
+			if (cursor.getCount() == 0) {
+				return null;
+			}
+
+			cursor.moveToFirst();
+			return  cursor.getAccount();
+		} finally {
+			cursor.close();;
+		}
+	}
+
+	public void updateAccount(Account account) {
+		ContentValues values = getAccountContentValues(account);
+
+		mDatabase.update(AccountTable.NAME, values,
+				AccountTable.Cols.NAME + " = ?",
+				new String[] { account.getName() });
+	}
+
+	private AccountCursorWrapper queryAccounts(String whereClause, String[] whereArgs) {
+		Cursor cursor = mDatabase.query(
+				AccountTable.NAME,
+				null, // Columns - null selects all columns
+				whereClause,
+				whereArgs,
+				null, // groupBy
+				null, // having
+				null  // orderBy
+		);
+		return new AccountCursorWrapper(cursor);
+	}
+
+	private static ContentValues getAccountContentValues(Account account) {
+		ContentValues values = new ContentValues();
+		values.put(AccountTable.Cols.NAME, account.getName());
+		values.put(AccountTable.Cols.PASSWORD, account.getPassword());
+
+		return values;
+	}
+
 	public void addItem(Item item) {
-		ContentValues values = getContentValues(item);
+		ContentValues values = getItemContentValues(item);
 
 		mDatabase.insert(ItemTable.NAME, null, values);
 	}
@@ -49,7 +128,7 @@ public class SuitCase {
 
 	public List<Item> getItems() {
 		List<Item> items = new ArrayList<>();
-		ItemCursorWrapper cursor = queryCrimes(null, null);
+		ItemCursorWrapper cursor = queryItems(null, null);
 
 		try {
 			cursor.moveToFirst();
@@ -65,7 +144,7 @@ public class SuitCase {
 	}
 
 	public Item getItem(UUID id) {
-		ItemCursorWrapper cursor = queryCrimes(
+		ItemCursorWrapper cursor = queryItems(
 				ItemTable.Cols.UUID + " =?",
 				new String[] { id.toString() }
 		);
@@ -86,16 +165,17 @@ public class SuitCase {
 		File filesDir = mContext.getFilesDir();
 		return new File(filesDir, item.getPhotoFilename());
 	}
+
 	public void updateItem(Item item) {
 		String uuidString = item.getId().toString();
-		ContentValues values = getContentValues(item);
+		ContentValues values = getItemContentValues(item);
 
 		mDatabase.update(ItemTable.NAME, values,
 				ItemTable.Cols.UUID + " = ?",
 				new String[] { uuidString });
 	}
 
-	private ItemCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
+	private ItemCursorWrapper queryItems(String whereClause, String[] whereArgs) {
 		Cursor cursor = mDatabase.query(
 				ItemTable.NAME,
 				null, // Columns - null selects all columns
@@ -108,7 +188,7 @@ public class SuitCase {
 		return new ItemCursorWrapper(cursor);
 	}
 
-	private static ContentValues getContentValues(Item item) {
+	private static ContentValues getItemContentValues(Item item) {
 		ContentValues values = new ContentValues();
 		values.put(ItemTable.Cols.UUID, item.getId().toString());
 		values.put(ItemTable.Cols.TITLE, item.getTitle());
@@ -118,5 +198,4 @@ public class SuitCase {
 
 		return values;
 	}
-
 }

@@ -1,8 +1,8 @@
 package com.example.suitcase.database;
 
 public class SuitCaseDbSchema {
-	public static final class UserTable {
-		public static final String NAME = "users";
+	public static final class AccountTable {
+		public static final String NAME = "accounts";
 
 		public static final class Cols {
 			public static final String NAME = "name";

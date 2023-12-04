@@ -9,10 +9,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.suitcase.database.SuitCaseDbSchema;
+
 public class RegisterActivity extends AppCompatActivity {
 
 	private static final String EXTRA_REGISTER =
 			"com.example.suitcase.register";
+	private SuitCase mSuitCase;
 	private EditText mUserNameEditText;
 	private EditText mPasswordEditText;
 	private EditText mRePasswordEditText;
@@ -27,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
+		mSuitCase = SuitCase.get(this);
 
 		mUserNameEditText = findViewById(R.id.register_username);
 		mPasswordEditText = findViewById(R.id.register_password);
@@ -41,6 +45,12 @@ public class RegisterActivity extends AppCompatActivity {
 				if (checkPassword() == false) {
 					return;
 				}
+
+				Account account = new Account();
+				account.setName( String.valueOf(mUserNameEditText.getText()) );
+				account.setPassword( String.valueOf(mPasswordEditText.getText()) );
+				mSuitCase.addAccount(account);
+
 				setRegisterResult(true);
 			}
 		});
@@ -56,14 +66,22 @@ public class RegisterActivity extends AppCompatActivity {
 
 	private boolean checkUsername() {
 		String username = String.valueOf(mUserNameEditText.getText());
-		if (username.isBlank() == false) {
-			return true;
+		if (username.isBlank()) {
+			int messageResId = R.string.username_is_blank;
+			Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
+					.show();
+			return false;
 		}
 
-		int messageResId = R.string.username_is_blank;
-		Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
-				.show();
-		return false;
+		Account account = mSuitCase.getAccount(username);
+		if (account == null) {
+			return true;
+		} else {
+			int messageResId = R.string.username_exist;
+			Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
+					.show();
+			return false;
+		}
 	}
 
 	private boolean checkPassword() {
