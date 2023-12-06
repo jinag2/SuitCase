@@ -17,6 +17,9 @@ public class Item {
 
 	public Item(UUID id) {
 		mId = id;
+		mUserName = "";
+		mTitle = "";
+		mDesc = "";
 	}
 
 	public UUID getId() {

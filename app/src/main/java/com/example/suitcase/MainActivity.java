@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+	private SuitCase mSuitCase;
 	private EditText mUserNameEditText;
 	private EditText mPasswordEditText;
 	private Button mLoginButton;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		mSuitCase = SuitCase.get(this);
 
 		mUserNameEditText = findViewById(R.id.login_username);
 		mPasswordEditText = findViewById(R.id.login_password);
@@ -33,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
 				String username = String.valueOf(mUserNameEditText.getText());
 				String password = String.valueOf(mPasswordEditText.getText());
 				if (checkAccount(username, password)) {
-					Intent intent = ItemListActivity.newIntent(MainActivity.this, username);
+					mSuitCase.setLoginName(username);
+					Intent intent = new Intent(MainActivity.this, ItemListActivity.class);
 					startActivity(intent);
 				}
 			}

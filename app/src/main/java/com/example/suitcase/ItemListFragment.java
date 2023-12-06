@@ -38,8 +38,7 @@ public class ItemListFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		assert getArguments() != null;
-		mUserName = getArguments().getString(ARG_USERNAME);
+		mUserName = SuitCase.get(getActivity()).getLoginName();
 	}
 
 	@Override
@@ -86,7 +85,7 @@ public class ItemListFragment extends Fragment {
 	@SuppressLint("NotifyDataSetChanged")
 	private void updateUI() {
 		SuitCase suitCase = SuitCase.get(getActivity());
-		List<Item> items = suitCase.getItems();
+		List<Item> items = suitCase.getItems(mUserName);
 
 		if (mAdapter == null) {
 			mAdapter = new ItemAdapter(items);

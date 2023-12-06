@@ -20,6 +20,7 @@ public class SuitCase {
 
 	private Context mContext;
 	private SQLiteDatabase mDatabase;
+	private String mLoginName;
 
 	public static SuitCase get(Context context) {
 		if (sSuitCase == null) {
@@ -32,6 +33,14 @@ public class SuitCase {
 	private SuitCase(Context context) {
 		mContext = context.getApplicationContext();
 		mDatabase = new SuitCaseBaseHelper(mContext).getWritableDatabase();
+	}
+
+	public void setLoginName(String name) {
+		mLoginName = name;
+	}
+
+	public String getLoginName() {
+		return mLoginName;
 	}
 
 	public void addAccount(Account account) {
@@ -126,14 +135,17 @@ public class SuitCase {
 		return true;
 	}
 
-	public List<Item> getItems() {
+	public List<Item> getItems(String username) {
 		List<Item> items = new ArrayList<>();
 		ItemCursorWrapper cursor = queryItems(null, null);
 
 		try {
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast()) {
-				items.add(cursor.getItem());
+				Item item = cursor.getItem();
+				if (item.getUserName().equals(username)) {
+					items.add(item);
+				}
 				cursor.moveToNext();
 			}
 		} finally {
@@ -191,6 +203,7 @@ public class SuitCase {
 	private static ContentValues getItemContentValues(Item item) {
 		ContentValues values = new ContentValues();
 		values.put(ItemTable.Cols.UUID, item.getId().toString());
+		values.put(ItemTable.Cols.USER_NAME, item.getUserName());
 		values.put(ItemTable.Cols.TITLE, item.getTitle());
 		values.put(ItemTable.Cols.PRICE, item.getPrice());
 		values.put(ItemTable.Cols.DETAIL, item.getDesc());

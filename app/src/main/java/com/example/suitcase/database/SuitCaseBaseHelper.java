@@ -26,6 +26,7 @@ public class SuitCaseBaseHelper extends SQLiteOpenHelper {
 		db.execSQL("create table " + SuitCaseDbSchema.ItemTable.NAME + "(" +
 				" _id integer primary key autoincrement, " +
 				SuitCaseDbSchema.ItemTable.Cols.UUID + ", " +
+				SuitCaseDbSchema.ItemTable.Cols.USER_NAME + ", " +
 				SuitCaseDbSchema.ItemTable.Cols.TITLE + ", " +
 				SuitCaseDbSchema.ItemTable.Cols.PRICE + ", " +
 				SuitCaseDbSchema.ItemTable.Cols.DETAIL + ", " +
